@@ -1,0 +1,14 @@
+{
+  "SharedAssets": "*.*",
+  "Title": "The Melon Game",
+  "Type": "game",
+  "Org": "local",
+  "Ident": "the_melon_game",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "ResourcePaths": null,
+  "HasCode": true,
+  "CodePath": "/code/",
+  "RootNamespace": "Sandbox"
+}
