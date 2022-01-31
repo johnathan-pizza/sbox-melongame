@@ -2,7 +2,7 @@
   "SharedAssets": "*.*",
   "Title": "The Melon Game",
   "Type": "game",
-  "Org": "local",
+  "Org": "Johnathan Pizza Inc.",
   "Ident": "the_melon_game",
   "Schema": 1,
   "HasAssets": true,
