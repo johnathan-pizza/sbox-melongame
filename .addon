@@ -2,13 +2,13 @@
   "SharedAssets": "*.*",
   "Title": "The Melon Game",
   "Type": "game",
-  "Org": "Johnathan Pizza Inc.",
+  "Org": "pizza",
   "Ident": "the_melon_game",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
   "ResourcePaths": null,
   "HasCode": true,
-  "CodePath": "/code/",
+  "CodePath": "code/",
   "RootNamespace": "Sandbox"
 }
