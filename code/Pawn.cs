@@ -4,23 +4,33 @@ using System.Linq;
 
 namespace Sandbox
 {
-	partial class Pawn : AnimEntity
+	partial class Pawn : Player
 	{
-		/// <summary>
-		/// Called when the entity is first created 
-		/// </summary>
-		public override void Spawn()
+		public override void Respawn()
 		{
-			base.Spawn();
+			SetModel( "models/citizen/citizen.vmdl" );
 
 			//
-			// Use a watermelon model
+			// Use WalkController for movement (you can make your own PlayerController for 100% control)
 			//
-			SetModel( "models/sbox_props/watermelon/watermelon.vmdl" );
+			Controller = new WalkController();
 
+			//
+			// Use StandardPlayerAnimator  (you can make your own PlayerAnimator for 100% control)
+			//
+			Animator = new StandardPlayerAnimator();
+
+			//
+			// Use ThirdPersonCamera (you can make your own Camera for 100% control)
+			//
+			Camera = new FirstPersonCamera();
+
+			EnableAllCollisions = true;
 			EnableDrawing = true;
 			EnableHideInFirstPerson = true;
 			EnableShadowInFirstPerson = true;
+
+			base.Respawn();
 		}
 
 		/// <summary>
@@ -30,28 +40,15 @@ namespace Sandbox
 		{
 			base.Simulate( cl );
 
-			Rotation = Input.Rotation;
-			EyeRot = Rotation;
+			//
+			// If you have active children (like a weapon etc) you should call this to 
+			// simulate those too.
+			//
+			SimulateActiveChild( cl, ActiveChild );
 
-			// build movement from the input values
-			var movement = new Vector3( Input.Forward, Input.Left, 0 ).Normal;
-
-			// rotate it to the direction we're facing
-			Velocity = Rotation * movement;
-
-			// apply some speed to it
-			Velocity *= Input.Down( InputButton.Run ) ? 1000 : 200;
-
-			// apply it to our position using MoveHelper, which handles collision
-			// detection and sliding across surfaces for us
-			MoveHelper helper = new MoveHelper( Position, Velocity );
-			helper.Trace = helper.Trace.Size( 16 );
-			if ( helper.TryMove( Time.Delta ) > 0 )
-			{
-				Position = helper.Position;
-			}
-
+			//
 			// If we're running serverside and Attack1 was just pressed, spawn a ragdoll
+			//
 			if ( IsServer && Input.Pressed( InputButton.Attack1 ) )
 			{
 				var ragdoll = new ModelEntity();
@@ -63,16 +60,11 @@ namespace Sandbox
 			}
 		}
 
-		/// <summary>
-		/// Called every frame on the client
-		/// </summary>
-		public override void FrameSimulate( Client cl )
+		public override void OnKilled()
 		{
-			base.FrameSimulate( cl );
+			base.OnKilled();
 
-			// Update rotation every frame, to keep things smooth
-			Rotation = Input.Rotation;
-			EyeRot = Rotation;
+			EnableDrawing = false;
 		}
 	}
 }
